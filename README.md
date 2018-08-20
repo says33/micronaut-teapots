@@ -1,4 +1,6 @@
-# Micronaut micro example: Teapots
+# Micronaut for Teapots
+
+Simple project for Teapots using [micronaut.io](http://micronaut.io/)
 
 To compile: 
 ```
