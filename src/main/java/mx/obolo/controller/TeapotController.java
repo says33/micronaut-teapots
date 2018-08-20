@@ -17,7 +17,7 @@ public class TeapotController {
 
     private TeapotService teapotService;
 
-    @Get(processes = MediaType.APPLICATION_JSON)
+    @Get(produces = MediaType.APPLICATION_JSON)
     public List<Teapot> get() {
         return teapotService.getAll();
     }
