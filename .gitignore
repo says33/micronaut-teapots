@@ -1,0 +1,13 @@
+micronaut-teapots.iml
+.DS_Store
+.gradle/
+.gradletasknamecache
+.idea/
+.idea/compiler.xml
+.idea/modules/
+.idea/workspace.xml
+build/
+gradle/
+gradlew
+gradlew.bat
+out/

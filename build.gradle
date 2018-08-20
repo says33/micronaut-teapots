@@ -1,0 +1,77 @@
+plugins {
+    id "java"
+    id "application"
+    id "jacoco"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+    id "com.github.johnrengelman.shadow" version "2.0.4"
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.micronaut:bom:1.0.0.M4"
+    }
+}
+
+dependencies {
+    annotationProcessor "io.micronaut:inject-java"
+
+    compile "io.micronaut:http-client"
+    compile "io.micronaut:http-server-netty"
+    compile "io.micronaut:inject"
+    compile "io.micronaut:runtime"
+    compile "io.micronaut.configuration:hibernate-validator"
+
+    compileOnly "io.micronaut:inject-java"
+
+    runtime "ch.qos.logback:logback-classic:1.2.3"
+
+    testCompile "org.mockito:mockito-core:2.+"
+    testCompile "io.micronaut:inject-groovy"
+    testCompile ("org.spockframework:spock-core:1.1-groovy-2.4") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
+
+    testCompile "junit:junit:4.12"
+    testCompile "io.micronaut:inject-java"
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+jacocoTestReport {
+    description = "Generate Jacoco coverage reports after running tests."
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.enabled true
+        html.destination file("$buildDir/reports/coverage")
+    }
+    dependsOn jacocoTestCoverageVerification
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestReport
+
+ext {
+    email = "danielmcasv@gmail.com"
+}
+
+version "0.0.1.SNAPSHOT"
+group "mx.obolo"
+mainClassName = "mx.obolo.TeapotsApplication"
