@@ -6,5 +6,4 @@ micronaut-teapots.iml
 .idea/modules/
 .idea/workspace.xml
 build/
-gradle/
 out/
