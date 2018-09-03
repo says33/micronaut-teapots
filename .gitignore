@@ -1,6 +1,5 @@
 micronaut-teapots.iml
 .DS_Store
-.gradle/
 .gradletasknamecache
 .idea/
 .idea/compiler.xml
@@ -8,6 +7,4 @@ micronaut-teapots.iml
 .idea/workspace.xml
 build/
 gradle/
-gradlew
-gradlew.bat
 out/

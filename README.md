@@ -6,7 +6,6 @@ To compile:
 ```
 # gradle compileJava
 ```
-
 To execute: 
 ```
 # gradle run
