@@ -1,0 +1,36 @@
+#!/usr/bin/env groovy
+
+
+try{
+    node("linux2") {
+
+        stage('checkout'){
+            checkout([
+                $class: 'GitSCM',
+                branches: [[name: '*/develop']],
+                doGenerateSubmoduleConfigurations: false,
+                extensions: [[$class: 'CleanBeforeCheckout']],
+                submoduleCfg: [],
+                userRemoteConfigs: [[
+                    credentialsId: 'github',
+                    url: 'git@github.com:says33/micronaut-teapots.git'
+                ]]
+            ])
+
+
+        }
+        stage('Build'){
+          sh '''./gradlew compileJava'''
+        }
+
+        stage('Unit-tests') {
+            sh '''./gradlew check'''
+        }
+
+    }
+} catch(caughtError) {
+    throw caughtError
+}
+finally{
+  deleteDir()
+}
