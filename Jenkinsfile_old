@@ -1,37 +1,37 @@
 #!/usr/bin/env groovy
 
-try{
-    node("linux") {
+node("linux") {
+  try{
+    env.JAVA_HOME = "${tool 'jdk8'}"
+    env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
 
-     env.JAVA_HOME = "${tool 'jdk8'}"
-     env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
-        stage('checkout'){
-            checkout([
-                $class: 'GitSCM',
-                branches: [[name: '*/develop']],
-                doGenerateSubmoduleConfigurations: false,
-                extensions: [[$class: 'CleanBeforeCheckout']],
-                submoduleCfg: [],
-                userRemoteConfigs: [[
-                    credentialsId: 'github',
-                    url: 'git@github.com:says33/micronaut-teapots.git'
-                ]]
-            ])
-
-
-        }
-        stage('Build'){
-          sh '''./gradlew compileJava'''
-        }
-
-        stage('Unit-tests') {
-            sh '''./gradlew check'''
-        }
-
+    stage('checkout'){
+        checkout([
+            $class: 'GitSCM',
+            branches: [[name: '*/develop']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [[$class: 'CleanBeforeCheckout']],
+            submoduleCfg: [],
+            userRemoteConfigs: [[
+                credentialsId: 'github',
+                url: 'git@github.com:says33/micronaut-teapots.git'
+            ]]
+        ])
     }
-} catch(caughtError) {
+
+    stage('Build'){
+      sh '''./gradlew compileJava'''
+    }
+
+    stage('Unit-tests') {
+        sh '''./gradlew check'''
+    }
+
+  } catch(caughtError) {
     throw caughtError
-}
-finally{
-  deleteDir()
+  }
+  finally{
+    cleanWs()
+  }
+
 }
