@@ -3,6 +3,8 @@
 try{
     node("linux") {
 
+     env.JAVA_HOME = "${tool 'jdk8'}"
+     env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
         stage('checkout'){
             checkout([
                 $class: 'GitSCM',
