@@ -1,8 +1,7 @@
 #!/usr/bin/env groovy
 
-
 try{
-    node("linux2") {
+    node("linux") {
 
         stage('checkout'){
             checkout([
