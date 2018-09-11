@@ -1,0 +1,15 @@
+docker:
+  registry: test.registry.com
+number-test: 42
+list-test:
+  - name1
+  - name2
+
+notification:
+  email:
+    recipients:
+      - sergiorodriguez@rccl.com
+  slack:
+    channel: devops
+npm:
+  registry: https://a.com/nexus/repository/npm
