@@ -4,8 +4,8 @@ import resources.email.html.*
 
 node('linux') {
 
-  env.MAVEN_HOME = "${tool 'Maven 3.3.9'}"
-  env.PATH = "${env.MAVEN_HOME}/bin:${env.PATH}"
+  env.JAVA_HOME = "${tool 'jdk8'}"
+  env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
 
   properties([
   buildDiscarder(
