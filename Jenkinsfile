@@ -1,52 +1,30 @@
-#!/usr/bin/env groovy
+@Library('groovy-blocks@sandbox/demo')
+import io.rcl.labs.jenkins.libraries.GradlePipeline
+import resources.email.html.*
 
-properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '3', artifactNumToKeepStr: '8', daysToKeepStr: '3', numToKeepStr: '8')), disableConcurrentBuilds() ])
+node('android') {
 
-node('linux') {
-  try{
+  env.MAVEN_HOME = "${tool 'Maven 3.3.9'}"
+  env.PATH = "${env.MAVEN_HOME}/bin:${env.PATH}"
 
-      def branch = env.BRANCH_NAME
-      env.JAVA_HOME = "${tool 'jdk8'}"
-      env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+  properties([
+  buildDiscarder(
+      logRotator(
+          artifactDaysToKeepStr: '3',
+          artifactNumToKeepStr: '8',
+          daysToKeepStr: '3',
+          numToKeepStr: '8'
+      )
+  ),
+  disableConcurrentBuilds()
+  ])
 
-      checkoutStage('git@github.com:says33/micronaut-teapots.git', branch)
-      buildArtifact()
-      unitTest()
+  def buildAnd = GradlePipeline.Builder(this)
+    .context('.')
+    .gradleBuild('compileJava')
+    .gradleTests('check')
+    .build()
 
-  } catch(caughtError) {
-      throw caughtError
-  } finally {
-      cleanWs()
-  }
-}
+  buildAnd.execute()
 
-
-def checkoutStage(repo, branch) {
-    stage('Checkout'){
-        checkout([
-            $class: 'GitSCM',
-            branches:scm.branches,
-            doGenerateSubmoduleConfigurations: false,
-            extensions:  scm.extensions + [
-                [$class: 'CloneOption', noTags: false, reference: '', shallow: true, timeout: 120]
-            ],
-            submoduleCfg: [],
-            userRemoteConfigs: [[
-                credentialsId: 'github',
-                url: repo
-            ]]
-        ])
-    }
-}
-
-def buildArtifact() {
-  stage('Build') {
-    sh '''./gradlew compileJava'''
-  }
-}
-
-def unitTest() {
-  stage('Unit Test') {
-    sh '''./gradlew check'''
-  }
 }
