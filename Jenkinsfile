@@ -2,7 +2,7 @@
 import io.rcl.labs.jenkins.libraries.GradlePipeline
 import resources.email.html.*
 
-node('android') {
+node('linux') {
 
   env.MAVEN_HOME = "${tool 'Maven 3.3.9'}"
   env.PATH = "${env.MAVEN_HOME}/bin:${env.PATH}"
