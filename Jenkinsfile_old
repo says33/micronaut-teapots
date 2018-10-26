@@ -21,11 +21,14 @@ node("linux") {
 
     stage('Build'){
       sh '''./gradlew compileJava'''
+      sh "echo ${env.BUILD_URL}"
     }
 
     stage('Unit-tests') {
         sh '''./gradlew check'''
     }
+
+
 
   } catch(caughtError) {
     throw caughtError
